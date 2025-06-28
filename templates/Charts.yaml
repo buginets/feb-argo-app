@@ -1,0 +1,5 @@
+apiVersion: v2
+name: General-app-chart
+description: All Helm chart for my company's applications
+type: application
+version: 0.1.0

@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-app-{{ .Values.global.namespace }}
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'    # The Helm chart repository
+    chart: nginx                 # The name of the chart to install
+    targetRevision: 20.1.4               # The specific chart  version
+    helm:
+      values: |
+        service:
+          type: LoadBalancer
+        replicaCount: {{ .Values.global.replicaCount }}
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: env-{{ .Values.global.namespace }}                 # The namespace where cert-manager will be installed
+  syncPolicy:
+    automated:
+      prune: true                            
+      selfHeal: true   
